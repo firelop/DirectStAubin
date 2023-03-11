@@ -1,14 +1,20 @@
-<script lang="ts">
-    import { onMount, setContext } from "svelte";
-    import { writable } from "svelte/store";
-    let actualPage: String = "Acceuil";
-    let page = writable(actualPage); 
-    setContext("page", page);
+<script>
+    import { onMount } from "svelte";
+    import { page } from "$app/stores";
+    export let currentpage;
 
-    function clicked(npage: String) {
+    let actualPage = $currentpage;
+
+     
+    onMount(() => {
+        $currentpage = actualPage;
+    })
+    
+
+    function clicked(npage) {
         return () => {
             actualPage = npage;
-            $page = actualPage;
+            $currentpage = actualPage;
         }
     }
 </script>
@@ -17,7 +23,9 @@
     <div class="container">
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="iconlink {actualPage == "Emplois du temps" ? "active" : ""}" on:click={clicked("Emplois du temps")}>
-            <i class="bi bi-calendar3-week"></i>
+            <a href="/schedule">
+                <i class="bi bi-calendar3-week"></i>
+            </a>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="iconlink {actualPage == "Notes" ? "active" : ""}" on:click={clicked("Notes")}>
@@ -25,7 +33,9 @@
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events --> 
         <div class="iconlink widther {actualPage == "Acceuil" ? "active" : ""}" on:click={clicked("Acceuil")}>
-            <i class="bi bi-house"></i>
+            <a href="/">
+                <i class="bi bi-house"></i>
+            </a>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
         <div class="iconlink {actualPage == "Travail à faire" ? "active" : ""}" on:click={clicked("Travail à faire")}>
@@ -44,23 +54,27 @@
         display: flex;
         justify-content: center;
     }
+    a { 
+        color: inherit; 
+    } 
     .container {
         display: flex;
         flex-direction: row;
         width: fit-content;
         padding: 1em;
-        gap: 1.5em;
+        gap: 0.7em;
         background-color: #D9D9D9;
         border-radius: 15px;
-        box-shadow: 0px 5px 7px 0px rgba(0, 0, 0, 0.083);
+        box-shadow: 0px 5px 7px 4px rgba(0, 0, 0, 0.1);
     }
     .bi {
-        font-size: 1.7em;
+        font-size: 1.5em;
     }
     .iconlink {
-        width: 3.5em;
-        height: 3.5em;
+        height: 3em;
+        width: 3em;
         display: flex;
+        color: black;
         justify-content: center;
         align-items: center;
         background: linear-gradient(125.27deg, #FFFFFF 0%, rgba(255, 255, 255, 0.25) 100%);
@@ -87,6 +101,26 @@
         transition: transform 0.2s ease-in-out;
     }
 
+
+    @media screen and (min-width: 768px) {
+        .container {
+            gap: 1.5em;
+        }
+        .iconlink {
+            width: 5em;
+            height: 5em;
+        }
+        .widther {
+            width: 10em;
+            color: linear-gradient(125.27deg, #ED71AD 0%, #7277F1 100%);
+        }
+
+        .bi {
+            font-size: 2.7em;
+        }
+
+        
+    }
     
 </style>
 
