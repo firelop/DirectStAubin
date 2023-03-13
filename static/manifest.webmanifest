@@ -1,0 +1,21 @@
+{
+    "name": "Directe Saint-Aubin",
+    "short_name": "DirecteStAubin",
+    "description": "EcoleDirecte en mieux ! Pour les élèves du lycée Saint-Aubin La Salle",
+    "icons": [
+      {
+        "src": "./32x32.png",
+        "sizes": "32x32",
+        "type": "image/png"
+      },
+      {
+        "src": "./512x512.png",
+        "sizes": "512x512",
+        "type": "image/png"
+      }
+    ],
+    "start_url": "/",
+    "display": "fullscreen",
+    "theme_color": "#7277F1",
+    "background_color": "#2C2732"
+  }

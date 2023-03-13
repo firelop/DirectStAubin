@@ -86,14 +86,17 @@
     }
 
 
-    .widther {
+    .iconlink.widther {
         width: 5em;
-        color: linear-gradient(125.27deg, #ED71AD 0%, #7277F1 100%);
     }
 
     .active {
-        background: linear-gradient(125.27deg, #ED71AD 0%, #7277F1 100%);
+        background: #7277F1;
         color: white;
+    }
+
+    .widther.active {
+        background: linear-gradient(125.27deg, #ED71AD 0%, #7277F1 100%)!important;
     }
 
     .iconlink:hover {
@@ -112,7 +115,6 @@
         }
         .widther {
             width: 10em;
-            color: linear-gradient(125.27deg, #ED71AD 0%, #7277F1 100%);
         }
 
         .bi {

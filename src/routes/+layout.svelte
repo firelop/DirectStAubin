@@ -1,8 +1,10 @@
 <script>
     import { writable } from "svelte/store";
     import { page } from "$app/stores";
+    import LoginPopup from "./LoginPopup.svelte"
     import Navbar from "./Navbar.svelte";
     import PageTitle from "./PageTitle.svelte";
+    import { connected } from "./../api.js";
     
     const page_links = {
         "/schedule": "Emplois du temps",
@@ -28,6 +30,9 @@
     <slot/>
 </div>
 
+{#if !$connected}
+<LoginPopup></LoginPopup>
+{/if}
 
 <div class="bottom">
     <Navbar currentpage={actual_page}></Navbar>
