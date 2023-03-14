@@ -19,14 +19,14 @@ jobs:
       - name: Set up Node.js version
         uses: actions/setup-node@v1
         with:
-          node-version: '16.x'
+          node-version: '18.x'
 
       - name: npm install, build, and test
         run: |
           npm install
-          npm run build --if-present
-          npm run test --if-present
 
+      - name: Build
+        run: npm run build
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v2
         with:
@@ -52,5 +52,5 @@ jobs:
         with:
           app-name: 'directestaubin'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_858261CDBEB948F593954E3867B6BEB3 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_3623FC6A22584B71BCF8BA236C159929 }}
           package: .
