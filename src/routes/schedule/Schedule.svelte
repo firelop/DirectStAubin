@@ -1,24 +1,32 @@
 <script>
+    import { api_endpoint, connected, token } from "../../api";
+    import { onMount } from "svelte";
+
+    var stringTruncate = function(str, length){
+        var dots = str.length > length ? '...' : '';
+        return str.substring(0, length)+dots;
+    };
+
     let data = [
         {
-            starting: 0,
-            ending: 55,
+            start: 0,
+            end: 55,
             name: "Sciences et vie de la Terre",
             teacher: "A. Rideau",
             room: "B020",
             color: "#FF8EC5"
         }, 
         {
-            starting: 55,
-            ending: 110,
+            start: 55,
+            end: 110,
             name: "Mathématiques",
             teacher: "M. Coquereau",
             room: "B117", 
             color: "#FFB967"
         }, 
         {
-            starting: 125,
-            ending: 235,
+            start: 125,
+            end: 235,
             name: "Physiques",
             teacher: "G. Clair",
             room: "B010", 
@@ -26,12 +34,36 @@
         }
     ]
 
+    function fetchSchedule() {
+        fetch(api_endpoint + "schedule/", {
+            credentials: "include"
+        }).then((response) => {
+            return response.json();
+        }).then((json) => {
+            let tdate = new Date();
+            console.log(tdate.getFullYear() + "-" + tdate.getMonth().toString() + "-" + tdate.getDate().toString());
+            let today_date = tdate.getFullYear() + "-" + (tdate.getMonth()+1).toString().padStart(2, '0') + "-" + tdate.getDate().toString().padStart(2, '0');
+            console.log(today_date);
+            if(today_date in json["data"]) {
+                data = json["data"][today_date];
+            } else {
+                data = [];
+            }
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
     function getHourFromMinutes(defminutes) {
         let minutes = defminutes + 495;
         let hours = Math.floor(minutes / 60);
         let minutesLeft = minutes % 60;
         return `${hours}h${minutesLeft < 10 ? "0" : ""}${minutesLeft}`;
     }
+
+    onMount(() => {
+        fetchSchedule();
+    });
 </script>
 
 <div class="date">
@@ -39,11 +71,13 @@
 </div>
 
 <div class="timetable">
-    {#each data as {starting, ending, name, teacher, room, color}}
-    <div class="class" style="top: {starting*1.2}px; height: calc({(ending-starting)*1.2}px - 1em); background-color: {color}">
+    {#each data as {start, end, name, teacher, room, color}}
+    <div class="class" style="top: {start*1.2}px; height: calc({(end-start)*1.2}px - 1em); background-color: {color}">
         <div class="tags">
-            <div class="tag">{getHourFromMinutes(starting)}-{getHourFromMinutes(ending)}</div>
-            <div class="tag">{teacher}</div>
+            <div class="tag">{getHourFromMinutes(start)}-{getHourFromMinutes(end)}</div>
+            {#if teacher.length > 0}
+                <div class="tag">{stringTruncate(teacher, 20)}</div>
+            {/if}
             <div class="tag">{room}</div>
         </div>
         <h2>{name}</h2>
@@ -100,6 +134,7 @@
         height: 660px;
         border-radius: 5px;
         position: relative;
+        margin-bottom: 5em;
     }
 
     .date p {

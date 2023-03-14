@@ -1,6 +1,6 @@
 <script>
     import dsaComplete from "$lib/images/dsa_complete.png";
-    import { connected, api_endpoint, getUrlEncoded } from "./../api.js";
+    import { connected, api_endpoint, getUrlEncoded, token } from "./../api.js";
     
     let username = "";
     let password = "";
@@ -14,16 +14,21 @@
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
+            credentials: "include",
             body: getUrlEncoded({
                 username: username,
                 password: password
             })
         }).then((response) => {
-            response.json();
+            return response.json();
         }).then((json) => {
-            console.log(json);
-            $connected = true;
-            enabled = true;
+            if(json.code == 200) {
+                $token = json.token;
+                $connected = true;
+            } else {
+                $connected = false;
+            }
+            
         }).catch((error) => {
             console.log(error);
             enabled = true;
@@ -60,7 +65,7 @@
     }
 
     .allscreen img {
-        width: 50%;
+        height: 30vh;
         margin-top: 10px;
         margin-bottom: 2em;
     }

@@ -3,6 +3,7 @@ import { writable } from "svelte/store";
 export let connected = writable(false);
 export const api_endpoint = "https://directesaapi.azurewebsites.net/";
 
+
 export function getUrlEncoded(details) {
     var formBody = [];
     for (var property in details) {
@@ -13,3 +14,5 @@ export function getUrlEncoded(details) {
     formBody = formBody.join("&");
     return formBody;
 }
+
+export let token = writable(null);
