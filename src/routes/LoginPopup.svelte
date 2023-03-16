@@ -41,12 +41,13 @@
 <div class="allscreen">
     <img src={dsaComplete} alt="Logo Directe St-Aubin">
     <h1>Connexion</h1>
-    <label for="username" >Nom d'utilisateur</label>
-    <input type="text" bind:value={username} name="username">
-    <label for="password">Mot de passe</label>
-    <input type="password" bind:value={password} name="password">
-
-    <button class="{enabled ? "" : "disabled"}" on:click={connect}>Connexion</button>
+    <form>
+        <label for="username" >Nom d'utilisateur</label>
+        <input type="text" bind:value={username} name="username">
+        <label for="password">Mot de passe</label>
+        <input type="password" bind:value={password} name="password">
+        <button class="{enabled ? "" : "disabled"}" on:click={connect}>Connexion</button>
+    </form>
 
 </div>
 <style>
@@ -63,6 +64,13 @@
         flex-direction: column;
         color: white;
         font-family: 'Rubik';
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
     }
 
     .allscreen img {

@@ -28,21 +28,21 @@
             </a>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="iconlink {actualPage == "Notes" ? "active" : ""}" on:click={clicked("Notes")}>
+        <div class="iconlink {actualPage == "Notes" ? "active" : ""}">
             <i class="bi bi-123"></i>    
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events --> 
-        <div class="iconlink widther {actualPage == "Acceuil" ? "active" : ""}" on:click={clicked("Acceuil")}>
+        <div class="iconlink widther {actualPage == "Accueil" ? "active" : ""}" on:click={clicked("Accueil")}>
             <a href="/">
                 <i class="bi bi-house"></i>
             </a>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="iconlink {actualPage == "Travail à faire" ? "active" : ""}" on:click={clicked("Travail à faire")}>
+        <div class="iconlink {actualPage == "Travail à faire" ? "active" : ""}" >
             <i class="bi bi-book"></i>
         </div>
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div class="iconlink {actualPage == "Conversations" ? "active" : ""}" on:click={clicked("Conversations")}>
+        <div class="iconlink {actualPage == "Conversations" ? "active" : ""}" >
             <i class="bi bi-chat"></i>
         </div>
     </div>

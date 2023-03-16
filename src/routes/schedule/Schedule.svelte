@@ -14,7 +14,8 @@
     let actual_date = new Date();
 
     let data = [];
-    let update = false;
+    let is_updating = false;
+
     const options = {
         weekday: "long",
         month: "long",
@@ -26,6 +27,52 @@
         let hours = Math.floor(minutes / 60);
         let minutesLeft = minutes % 60;
         return `${hours}h${minutesLeft < 10 ? "0" : ""}${minutesLeft}`;
+    }
+
+    function yesterday() {
+        if(is_updating) return;
+        actual_date.setDate(actual_date.getDate() - 1);
+        actual_date = new Date(actual_date);
+        is_updating = true;
+        if(convertDateToString(actual_date) in $cached) {
+            data = $cached[convertDateToString(actual_date)];
+            is_updating = false;
+        } else {
+            fetchSchedule(actual_date).then(() => {
+                if(convertDateToString(actual_date) in $cached) {
+                    data = $cached[convertDateToString(actual_date)];
+                } else {
+                    data = [];
+                }
+                is_updating = false;
+            }).catch(() => {
+                data = [];
+                is_updating = false;
+            });
+        }
+    }
+
+    function tomorrow() {
+        if(is_updating) return;
+        actual_date.setDate(actual_date.getDate() + 1);
+        actual_date = new Date(actual_date);
+        is_updating = true;
+        if(convertDateToString(actual_date) in $cached) {
+            data = $cached[convertDateToString(actual_date)];
+            is_updating = false;
+        } else {
+            fetchSchedule(actual_date).then(() => {
+                if(convertDateToString(actual_date) in $cached) {
+                    data = $cached[convertDateToString(actual_date)];
+                } else {
+                    data = [];
+                }
+                is_updating = false;
+            }).catch(() => {
+                data = [];
+                is_updating = false;
+            });
+        }
     }
 
     onMount(() => {
@@ -40,10 +87,10 @@
 </script>
 
 <div class="date">
-    <p>{actual_date.toLocaleDateString("fr", options)}</p>
+    <i on:click={yesterday} class="bi bi-chevron-left {is_updating ? "updating" : ""}"></i><p>{actual_date.toLocaleDateString("fr", options)}</p><i on:click={tomorrow} class="bi bi-chevron-right {is_updating ? "updating" : ""}"></i>
 </div>
 
-<div class="timetable {"up" ? update : "down"}">
+<div class="timetable">
     {#each data as {start, end, name, room, color}}
     <div class="class" style="top: {start*1.2}px; height: calc({(end-start)*1.2}px - 1em); background-color: {color}">
         <div class="tags">
@@ -92,6 +139,13 @@
         margin: 0;
     }
 
+    i.bi {
+        cursor: pointer;
+    }
+    i.bi.updating {
+        cursor: not-allowed;
+    }
+
 
     .date {
         background-color: #1E1E1E;
@@ -99,6 +153,9 @@
         border-radius: 3rem;
         text-align: center;
         color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
     }
 
     .timetable {

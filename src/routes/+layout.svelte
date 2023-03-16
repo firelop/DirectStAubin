@@ -5,16 +5,18 @@
     import Navbar from "./Navbar.svelte";
     import PageTitle from "./PageTitle.svelte";
     import { connected } from "./../api.js";
+    import { onMount } from "svelte";
     
     const page_links = {
         "/schedule": "Emplois du temps",
-        "/": "Acceuil",
+        "/": "Accueil",
         "/todo": "Travail à faire",
         "/chat": "Conversations",
         "/grades": "Notes"
     }
 
     let actual_page = new writable(page_links[$page.route.id]);
+
 </script>
 
 <svelte:head>
