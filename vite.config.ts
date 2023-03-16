@@ -9,5 +9,8 @@ export default defineConfig({
 			cert: fs.readFileSync('localhost.pem')
 		}
 	},*/
+	server: {
+		host: "0.0.0.0"
+	},
 	plugins: [sveltekit()]
 });

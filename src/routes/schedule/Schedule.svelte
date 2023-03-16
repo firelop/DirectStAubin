@@ -1,5 +1,5 @@
 <script>
-    import { api_endpoint, connected, token } from "../../api";
+    import { api_endpoint, connected, token, cached, fetchSchedule } from "../../api";
     import { onMount } from "svelte";
 
     var stringTruncate = function(str, length){
@@ -7,52 +7,19 @@
         return str.substring(0, length)+dots;
     };
 
-    let data = [
-        {
-            start: 0,
-            end: 55,
-            name: "Sciences et vie de la Terre",
-            teacher: "A. Rideau",
-            room: "B020",
-            color: "#FF8EC5"
-        }, 
-        {
-            start: 55,
-            end: 110,
-            name: "Mathématiques",
-            teacher: "M. Coquereau",
-            room: "B117", 
-            color: "#FFB967"
-        }, 
-        {
-            start: 125,
-            end: 235,
-            name: "Physiques",
-            teacher: "G. Clair",
-            room: "B010", 
-            color: "#70BB64"
-        }
-    ]
-
-    function fetchSchedule() {
-        fetch(api_endpoint + "schedule/", {
-            credentials: "include"
-        }).then((response) => {
-            return response.json();
-        }).then((json) => {
-            let tdate = new Date();
-            console.log(tdate.getFullYear() + "-" + tdate.getMonth().toString() + "-" + tdate.getDate().toString());
-            let today_date = tdate.getFullYear() + "-" + (tdate.getMonth()+1).toString().padStart(2, '0') + "-" + tdate.getDate().toString().padStart(2, '0');
-            console.log(today_date);
-            if(today_date in json["data"]) {
-                data = json["data"][today_date];
-            } else {
-                data = [];
-            }
-        }).catch((error) => {
-            console.log(error);
-        });
+    function convertDateToString(date) {
+        return date.getFullYear() + "-" + (date.getMonth()+1).toString().padStart(2, '0') + "-" + date.getDate().toString().padStart(2, '0');
     }
+
+    let actual_date = new Date();
+
+    let data = [];
+    let update = false;
+    const options = {
+        weekday: "long",
+        month: "long",
+        day: "numeric",
+    };
 
     function getHourFromMinutes(defminutes) {
         let minutes = defminutes + 495;
@@ -62,22 +29,25 @@
     }
 
     onMount(() => {
-        fetchSchedule();
+        if(convertDateToString(actual_date) in $cached) {
+            data = $cached[convertDateToString(actual_date)];
+        } else {
+            fetchSchedule().then(() => {
+                data = $cached[convertDateToString(actual_date)];
+            });
+        }
     });
 </script>
 
 <div class="date">
-    <p>Vendredi 03 mars</p>
+    <p>{actual_date.toLocaleDateString("fr", options)}</p>
 </div>
 
-<div class="timetable">
-    {#each data as {start, end, name, teacher, room, color}}
+<div class="timetable {"up" ? update : "down"}">
+    {#each data as {start, end, name, room, color}}
     <div class="class" style="top: {start*1.2}px; height: calc({(end-start)*1.2}px - 1em); background-color: {color}">
         <div class="tags">
             <div class="tag">{getHourFromMinutes(start)}-{getHourFromMinutes(end)}</div>
-            {#if teacher.length > 0}
-                <div class="tag">{stringTruncate(teacher, 20)}</div>
-            {/if}
             <div class="tag">{room}</div>
         </div>
         <h2>{name}</h2>
@@ -94,6 +64,7 @@
     .tags {
         display: flex;
         gap: 5px;
+        max-width: 100%;
     }
 
     .tag {
@@ -102,6 +73,8 @@
         color: white;
         font-size: 0.8em;
         padding: 0.2em 0.7em;
+        white-space: nowrap;
+
     }
 
     .class {

@@ -1,6 +1,6 @@
 <script>
     import dsaComplete from "$lib/images/dsa_complete.png";
-    import { connected, api_endpoint, getUrlEncoded, token } from "./../api.js";
+    import { connected, api_endpoint, getUrlEncoded, token, fetchSchedule, cached } from "./../api.js";
     
     let username = "";
     let password = "";
@@ -24,6 +24,7 @@
         }).then((json) => {
             if(json.code == 200) {
                 $token = json.token;
+                fetchSchedule();
                 $connected = true;
             } else {
                 $connected = false;

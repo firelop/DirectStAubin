@@ -15,4 +15,20 @@ export function getUrlEncoded(details) {
     return formBody;
 }
 
+
+
 export let token = writable(null);
+
+export let cached = writable({});
+
+
+
+export async function fetchSchedule() {
+    return fetch(api_endpoint + "schedule/", {
+        credentials: "include"
+    }).then((response) => {
+        return response.json();
+    }).then((json) => {
+        return cached.set(json["data"]);
+    });
+  }
