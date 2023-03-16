@@ -41,7 +41,7 @@
 <div class="allscreen">
     <img src={dsaComplete} alt="Logo Directe St-Aubin">
     <h1>Connexion</h1>
-    <form>
+    <form method="post">
         <label for="username" >Nom d'utilisateur</label>
         <input type="text" bind:value={username} name="username">
         <label for="password">Mot de passe</label>
