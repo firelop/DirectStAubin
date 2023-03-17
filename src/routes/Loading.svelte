@@ -2,7 +2,7 @@
     import loading from "$lib/images/loading.gif";
 </script>
 <div class="loading">
-    <img src={loading} alt="Loading">
+    <img class="rounded" src={loading} alt="Loading">
 </div>
 
 <style>
@@ -18,5 +18,8 @@
         align-items: center;
         z-index: 9999;
         opacity: 0.9;
-    }    
+    }
+    img.rounded {
+        border-radius: 5px;
+    }
 </style>

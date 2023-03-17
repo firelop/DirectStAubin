@@ -100,10 +100,14 @@
 
 <div class="timetable">
     {#each data as {start, end, name, room, color}}
-    <div class="class" style="top: {start*1.2}px; height: calc({(end-start)*1.2}px - 1em); background-color: {color}">
+    <div class="class {color == "#f3f3f3" ? "cancelled" : ""}" style="top: {start*1.2}px; height: calc({(end-start)*1.2}px - 1em); background-color: {color}">
         <div class="tags">
-            <div class="tag">{getHourFromMinutes(start)}-{getHourFromMinutes(end)}</div>
+            <div class="tag">{getHourFromMinutes(start)}-{getHourFromMinutes(end)}</div>     
+            {#if color == "#f3f3f3"}
+            <div class="tag cancelled-tag">Annulé</div>
+            {:else}
             <div class="tag">{room}</div>
+            {/if}
         </div>
         <h2>{name}</h2>
     </div>
@@ -120,6 +124,26 @@
         display: flex;
         gap: 5px;
         max-width: 100%;
+    }
+
+    .cancelled-tag {
+        background-color: #cc1717!important;
+        color: white!important;
+    }
+
+    .cancelled .tag {
+        background-color: rgb(40, 40, 40);
+    }
+
+    .cancelled {
+        background-color: rgb(183, 183, 183)!important;
+        border: 1px dashed #cc1717;
+        z-index: 3;
+        width: calc(calc(100% - 1em) - 2px)!important;
+    }
+
+    .cancelled h2 {
+        color: rgb(40, 40, 40);
     }
 
     .tag {
