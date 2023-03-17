@@ -53,6 +53,7 @@
         position: fixed;
         bottom: 1em;
         width: 100%;
+        z-index: 10;
     }
     .main-content {
         padding: 1em;

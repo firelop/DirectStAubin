@@ -66,6 +66,7 @@
         background-color: #D9D9D9;
         border-radius: 15px;
         box-shadow: 0px 5px 7px 4px rgba(0, 0, 0, 0.1);
+
     }
     .bi {
         font-size: 1.5em;
