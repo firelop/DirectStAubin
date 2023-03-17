@@ -4,8 +4,8 @@
     import LoginPopup from "./LoginPopup.svelte"
     import Navbar from "./Navbar.svelte";
     import PageTitle from "./PageTitle.svelte";
-    import { connected } from "./../api.js";
-    import { onMount } from "svelte";
+    import { connected, loading } from "./../api.js";
+    import Loading from "./Loading.svelte";
     
     const page_links = {
         "/schedule": "Emplois du temps",
@@ -35,6 +35,12 @@
 {#if !$connected}
 <LoginPopup></LoginPopup>
 {/if}
+
+{#if $loading}
+<Loading></Loading>
+{/if}
+
+
 
 <div class="bottom">
     <Navbar currentpage={actual_page}></Navbar>

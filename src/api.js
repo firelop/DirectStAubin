@@ -24,6 +24,7 @@ export function getUrlEncoded(details) {
 export let token = writable(null);
 
 export let cached = writable({});
+export let loading = writable(false);
 
 
 
@@ -33,6 +34,8 @@ export async function fetchSchedule(date = null) {
     }).then((response) => {
         return response.json();
     }).then((json) => {
-        return cached.set(json["data"]);
+        cached.set(json["data"]);
+        return json;
+        
     });
   }

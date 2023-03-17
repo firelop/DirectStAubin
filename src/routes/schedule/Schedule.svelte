@@ -1,5 +1,5 @@
 <script>
-    import { api_endpoint, connected, token, cached, fetchSchedule } from "../../api";
+    import { loading, cached, fetchSchedule } from "../../api";
     import { onMount } from "svelte";
 
     var stringTruncate = function(str, length){
@@ -38,6 +38,7 @@
             data = $cached[convertDateToString(actual_date)];
             is_updating = false;
         } else {
+            $loading = true;
             fetchSchedule(actual_date).then(() => {
                 if(convertDateToString(actual_date) in $cached) {
                     data = $cached[convertDateToString(actual_date)];
@@ -45,9 +46,11 @@
                     data = [];
                 }
                 is_updating = false;
+                $loading = false;
             }).catch(() => {
                 data = [];
                 is_updating = false;
+                $loading = false;
             });
         }
     }
@@ -61,6 +64,7 @@
             data = $cached[convertDateToString(actual_date)];
             is_updating = false;
         } else {
+            $loading = true;
             fetchSchedule(actual_date).then(() => {
                 if(convertDateToString(actual_date) in $cached) {
                     data = $cached[convertDateToString(actual_date)];
@@ -68,9 +72,11 @@
                     data = [];
                 }
                 is_updating = false;
+                $loading = false;
             }).catch(() => {
                 data = [];
                 is_updating = false;
+                $loading = false;
             });
         }
     }
@@ -79,8 +85,10 @@
         if(convertDateToString(actual_date) in $cached) {
             data = $cached[convertDateToString(actual_date)];
         } else {
+            $loading = true;
             fetchSchedule().then(() => {
                 data = $cached[convertDateToString(actual_date)];
+                $loading = false;
             });
         }
     });

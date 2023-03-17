@@ -1,6 +1,6 @@
 <script>
     import dsaComplete from "$lib/images/dsa_complete.png";
-    import { connected, api_endpoint, getUrlEncoded, token, fetchSchedule, cached } from "./../api.js";
+    import { connected, api_endpoint, getUrlEncoded, token, fetchSchedule, cached, loading } from "./../api.js";
     
     let username = "";
     let password = "";
@@ -9,6 +9,7 @@
 
     function connect() {
         enabled = false;
+        $loading = true;
         fetch(api_endpoint + "login/", {
             method: "POST",
             headers: {
@@ -26,14 +27,16 @@
                 $token = json.token;
                 fetchSchedule();
                 $connected = true;
+                $loading = false;
             } else {
                 $connected = false;
+                $loading = false;
             }
             
         }).catch((error) => {
             console.log(error);
             enabled = true;
-
+            $loading = false;
         });
     }
 </script>
@@ -41,7 +44,7 @@
 <div class="allscreen">
     <img src={dsaComplete} alt="Logo Directe St-Aubin">
     <h1>Connexion</h1>
-    <form method="post">
+    <form method="dialog">
         <label for="username" >Nom d'utilisateur</label>
         <input type="text" bind:value={username} name="username">
         <label for="password">Mot de passe</label>
